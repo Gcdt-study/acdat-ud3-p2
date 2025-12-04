@@ -1,8 +1,7 @@
 package org.rafandco;
 
+import org.rafandco.dao.TareaDAO;
 import org.rafandco.db.Definition;
-import org.rafandco.db.Modification;
-import org.rafandco.db.Select;
 import org.rafandco.db.SingletonConnection;
 
 import java.sql.Connection;
@@ -19,6 +18,9 @@ public class Main {
         Definition definition = new Definition(connection);
         definition.creaTable();
 
+        TareaDAO tareaDAO = new TareaDAO(connection);
+
+        /*
         // Sentencias DML (Modification)
         Modification modification = new Modification(connection);
         // Inserts
@@ -36,7 +38,7 @@ public class Main {
 
         // Consulta del update
         Map<String, Object> consulta2 = select.getById(1);
-        System.out.println(consulta2);
+        System.out.println(consulta2);*/
 
         // Cerrar la conexión
         SingletonConnection.closeConnection();

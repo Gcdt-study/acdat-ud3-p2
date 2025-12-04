@@ -24,6 +24,7 @@ public class Definition {
         this.connection = connection;
     }
 
+
     /**
      * Crea la tabla tareas en la base de datos si esta no existe.
      * Utiliza una sentencia DDL y un Statement estándar.
