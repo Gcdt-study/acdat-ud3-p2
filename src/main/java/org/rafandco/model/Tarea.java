@@ -81,4 +81,8 @@ public class Tarea {
                 ", fechaCreacion=" + fechaCreacion +
                 '}';
     }
+
+    public void marcarComoCompletada() {
+        this.completada = true;
+    }
 }

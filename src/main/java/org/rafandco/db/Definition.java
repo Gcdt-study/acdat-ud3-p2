@@ -37,8 +37,17 @@ public class Definition {
                     "    titulo VARCHAR(150) NOT NULL,\n" +
                     "    descripcion TEXT,\n" +
                     "    completada BOOLEAN NOT NULL DEFAULT FALSE,\n" +
-                    "    prioridad SMALLINT CHECK (prioridad BETWEEN 1 AND 5)\n" +
+                    "    fechaCreacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP\n" +
                     ");");
+        } catch (SQLException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+
+    public void eliminarTabla() {
+        try (Statement stmt = connection.createStatement())  {
+            stmt.executeUpdate("DROP TABLE IF EXISTS tareas");
+            System.out.println("Goma de borrar tareas");
         } catch (SQLException e) {
             System.err.println("Error: " + e.getMessage());
         }

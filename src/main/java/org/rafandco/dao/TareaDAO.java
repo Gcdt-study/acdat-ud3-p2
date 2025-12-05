@@ -5,6 +5,7 @@ import org.rafandco.model.Tarea;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TareaDAO {
@@ -18,16 +19,16 @@ public class TareaDAO {
     public void insertar(Tarea tarea) {
         String titulo = tarea.getTitulo();
         String descripcion = tarea.getDescripcion();
-        boolean completada = tarea.isCompletada();
-
-        String sql = "INSERT INTO tareas (titulo, descripcion, completada) VALUES (?, ?, ?)";
+        //  boolean completada = tarea.isCompletada();
+        LocalDate fechaCreacion = tarea.getFechaCreacion();
+        String sql = "INSERT INTO tareas (titulo, descripcion, fechaCreacion) VALUES (?, ?, ?)";
         try (Connection con = SingletonConnection.getConnection();
              PreparedStatement pstmt = con.prepareStatement(sql)) { // PreparedStatement, igual que Statement,
             // pero más seguro y recomendado para consultas
             // Ingresar valores:
             pstmt.setString(1, titulo);
             pstmt.setString(2, descripcion);
-            pstmt.setBoolean(3, completada);
+            pstmt.setDate(3, Date.valueOf(fechaCreacion));
             pstmt.executeUpdate(); // Ejecuta la sentencia preparada INSERT, UPDATE, DELETE
 
         } catch (SQLException e) {
@@ -116,6 +117,32 @@ public class TareaDAO {
 
     public List<Tarea> listarTodas() {
         // SELECT ... FROM tareas
-        return null;
+        List<Tarea> tareas = new ArrayList<>();
+
+        String sql = "SELECT * FROM tareas";
+        int id2;
+        String titulo;
+        String descripcion;
+        boolean completada;
+        LocalDate fechaCreacion;
+
+        try (Connection con = SingletonConnection.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql))  {
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    id2 = rs.getInt("id");
+                    titulo = rs.getString("titulo");
+                    descripcion = rs.getString("descripcion");
+                    completada = rs.getBoolean("completada");
+                    fechaCreacion = rs.getDate("fechaCreacion").toLocalDate();
+
+                    tareas.add(new Tarea(id2, titulo, descripcion, completada, fechaCreacion));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return tareas;
     }
 }
